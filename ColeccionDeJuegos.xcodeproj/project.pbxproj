@@ -26,6 +26,7 @@
 		CDC4C6E22272427900E5E0AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CDC4C6E42272427900E5E0AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDC4C6EA2272469E00E5E0AF /* JuegosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuegosViewController.swift; sourceTree = "<group>"; };
+		CDC4C6EC2272570E00E5E0AF /* ColeccionDeJuegos.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ColeccionDeJuegos.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 		CDC4C6D42272427800E5E0AF /* ColeccionDeJuegos */ = {
 			isa = PBXGroup;
 			children = (
+				CDC4C6EC2272570E00E5E0AF /* ColeccionDeJuegos.entitlements */,
 				CDC4C6D52272427800E5E0AF /* AppDelegate.swift */,
 				CDC4C6D72272427800E5E0AF /* ViewController.swift */,
 				CDC4C6D92272427800E5E0AF /* Main.storyboard */,
@@ -102,6 +104,14 @@
 				TargetAttributes = {
 					CDC4C6D12272427700E5E0AF = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -290,8 +300,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ColeccionDeJuegos/ColeccionDeJuegos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4MYP8L3DKT;
 				INFOPLIST_FILE = ColeccionDeJuegos/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,8 +320,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ColeccionDeJuegos/ColeccionDeJuegos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4MYP8L3DKT;
 				INFOPLIST_FILE = ColeccionDeJuegos/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

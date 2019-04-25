@@ -39,7 +39,36 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
             
         }
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let juego = juegos[indexPath.row]
+        performSegue(withIdentifier: "juegoSegue", sender: juego)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let siguienteVC = segue.destination as! JuegosViewController
+        siguienteVC.juego = sender as? Juego
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            context.delete(juegos[indexPath.row])
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            obtenerFotos()
+            tableView.reloadData()
+        }
+    }
+    func obtenerFotos(){
+        
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        do{
+            juegos = try context.fetch(Juego.fetchRequest()) as! [Juego]
+        } catch {
+            print("Error al leer entidad de CoreData")
+        }
+        tableView.reloadData()
+    }
 
 }
 
