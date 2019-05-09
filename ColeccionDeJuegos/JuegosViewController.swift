@@ -8,12 +8,40 @@
 
 import UIKit
 
-class JuegosViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class JuegosViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    let salutations = ["Pelicula", "Viaje", "Memes", "Familia"]
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return salutations.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        self.view.endEditing(true)
+        return salutations[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.textBox.text = salutations[row]
+        self.pickerTextField.isHidden = true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField){
+        if textField == self.textBox{
+            self.pickerTextField.isHidden = true
+            textField.endEditing(true)
+        }
+    }
 
+    @IBOutlet weak var pickerTextField: UIPickerView!
     @IBOutlet weak var s: UIImageView!
     @IBOutlet weak var tituloTextField: UITextField!
     @IBOutlet weak var agregarActualizarBoton: UIButton!
     @IBOutlet weak var eliminarBoton: UIButton!
+    @IBOutlet weak var textBox: UITextField!
     var juego:Juego? = nil
     
     var imagePicker = UIImagePickerController()
@@ -24,11 +52,14 @@ class JuegosViewController: UIViewController, UIImagePickerControllerDelegate, U
         if juego != nil {
             s.image = UIImage(data: (juego!.imagen!) as Data)
             tituloTextField.text = juego!.titulo
+            textBox.text = juego!.categoria
             agregarActualizarBoton.setTitle("Actualizar", for: .normal)
         }else{
             eliminarBoton.isHidden = true
         }
-        
+        let pickerView = UIPickerView()
+        pickerTextField.delegate = self
+        pickerTextField.dataSource = self
     }
     @IBAction func fotosTapped(_ sender: Any) {
         imagePicker.sourceType = .photoLibrary
@@ -51,11 +82,14 @@ class JuegosViewController: UIViewController, UIImagePickerControllerDelegate, U
         if juego != nil {
             juego!.titulo! = tituloTextField.text!
             juego!.imagen = s.image?.jpegData(compressionQuality: 0.50)
+            juego!.categoria! = textBox.text!
         }else{
             let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             let juego = Juego(context: context)
             juego.titulo = tituloTextField.text
             juego.imagen = s.image?.jpegData(compressionQuality: 0.50)
+            juego.categoria = textBox.text
+            
         }
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         navigationController?.popViewController(animated: true)

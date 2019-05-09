@@ -14,10 +14,11 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let juego = juegos[indexPath.row]
         cell.textLabel?.text = juego.titulo
         cell.imageView?.image = UIImage(data: (juego.imagen!))
+        cell.detailTextLabel?.text = juego.categoria
         return cell
     }
     
@@ -28,6 +29,8 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        self.tableView.isEditing = true
+        setEditing(true, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +62,19 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
             tableView.reloadData()
         }
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+        let objetoMovido = self.juegos[fromIndexPath.row]
+        juegos.remove(at: fromIndexPath.row)
+        juegos.insert(objetoMovido, at: to.row)
+        NSLog("%@", "\(fromIndexPath.row) => \(to.row) \(juegos)")
+    }
+    
     func obtenerFotos(){
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -68,6 +84,16 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
             print("Error al leer entidad de CoreData")
         }
         tableView.reloadData()
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool){
+        super.setEditing(editing, animated: animated)
+        if (self.isEditing){
+            self.editButtonItem.title = "Editar"
+        }
+        else{
+            self.editButtonItem.title = "Hecho"
+        }
     }
 
 }
